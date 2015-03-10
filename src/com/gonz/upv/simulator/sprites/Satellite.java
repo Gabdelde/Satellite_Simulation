@@ -22,10 +22,8 @@ public class Satellite extends Sprite {
 	
 	private void calculePosition() {
 		actualDegree -= speed;
-		if(actualDegree <= 0)
-			actualDegree += 360;
-		double rads = Math.toRadians(actualDegree);
-		
+		if(actualDegree <= 0)	actualDegree += 360;
+		double rads = Math.toRadians(actualDegree);		
 		this.x = (int) (orbit.ellipse.getX() + (orbit.ellipse.getWidth()/2 * Math.cos(rads))); 
 		this.y = (int) (orbit.ellipse.getY() + (orbit.ellipse.getHeight()/2 * Math.sin(rads))); 				
 	}

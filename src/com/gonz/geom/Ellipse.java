@@ -75,13 +75,13 @@ public class Ellipse {
 	
 	public Point2D getLeftFocus() {
 		double a = width/2.0, b = height/2.0;
-		double c = Math.sqrt(a*a - b*b);
+		double c = Math.sqrt(Math.abs(a*a - b*b));
 		return new Point2D.Double(x-c, y);
 	}
 	
 	public Point2D getRightFocus() {
 		double a = width/2.0, b = height/2.0;
-		double c = Math.sqrt(a*a - b*b);
+		double c = Math.sqrt(Math.abs(a*a - b*b));
 		return new Point2D.Double(x+c, y);
 	}
 	
@@ -134,7 +134,8 @@ public class Ellipse {
 	
 	public void update() {
 		calculateRotationPoint();
-		recalculateDrawing();
+		recalculateDrawing();			
+		// showDebugInfo();
 	}
 	
 	public void calculateRotationPoint() {
@@ -146,21 +147,27 @@ public class Ellipse {
 		drawing = new Ellipse2D.Double(upperleftPoint.getX(), upperleftPoint.getY(), width, height); 
 	}
 	
+	public void showDebugInfo() {
+		System.out.println("x: "+x);
+		System.out.println("y: "+y);
+		System.out.println("width: "+width);
+		System.out.println("height: "+height);
+		System.out.println("rotation: "+rotation);
+		System.out.println("rotation point: "+rotationPoint.toString());
+	}
+	
 	public void render(Graphics2D g) {
 		AffineTransform oldTrans = g.getTransform();
 		BasicStroke oldStk = (BasicStroke) g.getStroke();
 		g.rotate(rotation, rotationPoint.getX(), rotationPoint.getY());
 		g.setColor(color);
-		g.setStroke(stroke);
-		
-		g.draw(drawing);
-		/*
+		g.setStroke(stroke);		
+		g.draw(drawing);		
 		g.setColor(Color.yellow);
 		g.drawLine((int)x, (int)(y-height/2), (int)x, (int)(y+height/2));
 		g.drawLine((int)(x-width/2), (int)y, (int)(x+width/2), (int)y);
 		g.fillOval((int)getLeftFocus().getX()-5, (int)getLeftFocus().getY()-5, 10, 10);
-		g.fillOval((int)getRightFocus().getX()-5, (int)getRightFocus().getY()-5, 10, 10);
-		*/
+		g.fillOval((int)getRightFocus().getX()-5, (int)getRightFocus().getY()-5, 10, 10);		
 		g.setStroke(oldStk);
 		g.setTransform(oldTrans);
 	}

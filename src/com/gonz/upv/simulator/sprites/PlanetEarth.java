@@ -17,12 +17,10 @@ public class PlanetEarth extends Sprite {
 	}
 	
 	public void init() {
-		//	loadTexture();
-		
+		//	loadTexture();		
 	}
 	
-	public void update() {
-		
+	public void update() {		
 	}
 	
 	public void render(Graphics2D g) {

@@ -42,10 +42,9 @@ public class SimulationArea extends JPanel implements Runnable{
 		this.setBackground(Color.black);	
 		dbImage = null;
 		running = true;
-		paused = true;
-		
+		paused = true;		
 		earth = new PlanetEarth(WIDTH/2, HEIGHT/2);
-		initialOrbit = new Orbit(WIDTH/2, HEIGHT/2, 300, 300, 225);
+		initialOrbit = new Orbit(WIDTH/2, HEIGHT/2, 350, 360, 0);
 		satellite = new Satellite(0,0,initialOrbit);
 	}
 	
@@ -106,11 +105,9 @@ public class SimulationArea extends JPanel implements Runnable{
 			else 
 				dbg = (Graphics2D) dbImage.getGraphics();
 		}		
-
 		dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		dbg.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		
+		dbg.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);		
 		// Clear the background
 		dbg.setColor(Color.black);
 		dbg.fillRect(0, 0, WIDTH, HEIGHT);		
@@ -119,8 +116,7 @@ public class SimulationArea extends JPanel implements Runnable{
 		// Draw the planet
 		earth.render(dbg);
 		// Draw the satellite
-		satellite.render(dbg);
-		
+		satellite.render(dbg);		
 		dbg.setColor(Color.WHITE);
 		dbg.drawRect(1, 1, WIDTH-2, HEIGHT-2);
 		
@@ -129,19 +125,14 @@ public class SimulationArea extends JPanel implements Runnable{
 	public void paint() {
 		// Actively render the buffer image to the screen
 		Graphics2D g;
-		try  {
-			
+		try  {			
 			// Get the panel's graphic context
 			g = (Graphics2D) this.getGraphics();					
-			
 			if (g != null && dbImage != null)
-				g.drawImage(dbImage, 0, 0, null);
-			
+				g.drawImage(dbImage, 0, 0, null);			
 			// Sync the display on some systems
-			Toolkit.getDefaultToolkit().sync();			
-			
-			g.dispose();
-			
+			Toolkit.getDefaultToolkit().sync();					
+			g.dispose();			
 		} catch (Exception e) {
 			System.err.println("Graphics context error: " + e);
 			e.printStackTrace();

@@ -8,14 +8,7 @@ import com.gonz.geom.Ellipse;
 public class Orbit extends Sprite {
 	
 	public Ellipse ellipse;	
-	
-	/**
-	 * @param xx coordenada x del foco de rotación
-	 * @param yy coordenada y del foco de rotación
-	 * @param ww anchura de la órbita
-	 * @param hh altura de la órbita
-	 * @param ang grados los cuales la órbita está rotada sobre el foco  
-	 */
+
 	public Orbit(int xx, int yy, int ww, int hh, double ang) {
 		super(xx, yy, ww, hh);
 		ellipse = new Ellipse(xx, yy, ww, hh, ang);
@@ -24,7 +17,7 @@ public class Orbit extends Sprite {
 	
 	public void moveEllipse() {
 		Point2D focus1 = ellipse.getLeftFocus();
-		ellipse.setX(ellipse.getX() - (focus1.getX()-ellipse.getX()));
+		ellipse.setX(ellipse.getX() + Math.abs((ellipse.getX() - focus1.getX())));
 	}
 	
 	@Override
