@@ -45,7 +45,7 @@ public class SimulationArea extends JPanel implements Runnable{
 		paused = true;
 		
 		earth = new PlanetEarth(WIDTH/2, HEIGHT/2);
-		initialOrbit = new Orbit(WIDTH/2, HEIGHT/2, 150, 600,45);
+		initialOrbit = new Orbit(WIDTH/2, HEIGHT/2, 300, 300, 225);
 		satellite = new Satellite(0,0,initialOrbit);
 	}
 	

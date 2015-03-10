@@ -1,29 +1,30 @@
 package com.gonz.upv.simulator.sprites;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+
+import com.gonz.geom.Ellipse;
 
 public class Orbit extends Sprite {
 	
-	private static BasicStroke stroke = new BasicStroke(2);
+	public Ellipse ellipse;	
 	
-	private double rotation;
-	private Ellipse2D ellipse;
-	
-	private Color color;
-	
+	/**
+	 * @param xx coordenada x del foco de rotación
+	 * @param yy coordenada y del foco de rotación
+	 * @param ww anchura de la órbita
+	 * @param hh altura de la órbita
+	 * @param ang grados los cuales la órbita está rotada sobre el foco  
+	 */
 	public Orbit(int xx, int yy, int ww, int hh, double ang) {
 		super(xx, yy, ww, hh);
-		this.rotation = Math.toRadians(ang);		
-		this.ellipse = new Ellipse2D.Double(x, y, width, height);
-		AffineTransform.getRotateInstance(rotation)
-			.createTransformedShape(ellipse);
-		
-		this.color = Color.white;
+		ellipse = new Ellipse(xx, yy, ww, hh, ang);
+		moveEllipse();
+	}
+	
+	public void moveEllipse() {
+		Point2D focus1 = ellipse.getLeftFocus();
+		ellipse.setX(ellipse.getX() - (focus1.getX()-ellipse.getX()));
 	}
 	
 	@Override
@@ -33,32 +34,7 @@ public class Orbit extends Sprite {
 
 	@Override
 	public void render(Graphics2D g) {
-		AffineTransform oldTrans = g.getTransform();
-		BasicStroke oldStk = (BasicStroke) g.getStroke();
-		g.rotate(rotation, x + width / 2, y + height / 2);
-		g.setColor(color);
-		g.setStroke(stroke);
-		g.draw(ellipse);
-		
-		g.setStroke(oldStk);
-		g.setTransform(oldTrans);
-	}
-	
-	public void setColor(Color c) {
-		this.color = c;
-	}
-	
-	public Point2D getCenter() {
-		double xx = x + width/2;
-		double yy = y + height/2;
-		Point2D p = new Point2D.Double(xx ,yy);
-		return p;
-	}
-	
-	public double getRotation() {
-		return rotation;
+		ellipse.render(g);
 	}
 
-	
-	
 }

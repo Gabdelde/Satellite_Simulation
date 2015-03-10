@@ -3,11 +3,10 @@ package com.gonz.upv.simulator.sprites;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 
 public class Satellite extends Sprite {
 
-	private final int RADIUS = 25;
+	private final int RADIUS = 15;
 	private double speed;
 	private double actualDegree;
 	private Orbit orbit;
@@ -17,7 +16,7 @@ public class Satellite extends Sprite {
 		this.width = RADIUS;
 		this.height = RADIUS;
 		this.orbit = init;
-		this.speed = 1.0;
+		this.speed = 0.5;
 		this.actualDegree = 360;
 	}
 	
@@ -26,10 +25,13 @@ public class Satellite extends Sprite {
 		if(actualDegree <= 0)
 			actualDegree += 360;
 		double rads = Math.toRadians(actualDegree);
-		Point2D orbitCenter = orbit.getCenter();
 		
-		this.x = (int) (orbitCenter.getX() + (orbit.getWidth()/2 * Math.cos(rads))); 
-		this.y = (int) (orbitCenter.getY() + (orbit.getHeight()/2 * Math.sin(rads))); 				
+		this.x = (int) (orbit.ellipse.getX() + (orbit.ellipse.getWidth()/2 * Math.cos(rads))); 
+		this.y = (int) (orbit.ellipse.getY() + (orbit.ellipse.getHeight()/2 * Math.sin(rads))); 				
+	}
+	
+	public void setOrbit(Orbit o) {
+		this.orbit = o;
 	}
 	
 	@Override
@@ -41,7 +43,9 @@ public class Satellite extends Sprite {
 	public void render(Graphics2D g) {
 		AffineTransform oldTrans = g.getTransform();
 		g.setColor(Color.GRAY);
-		g.rotate(orbit.getRotation(), orbit.getCenter().getX(), orbit.getCenter().getY());		
+		g.rotate(orbit.ellipse.getRotationRads(), 
+				orbit.ellipse.getRotationPoint().getX(), 
+				orbit.ellipse.getRotationPoint().getY());		
 		g.fillOval(x-width/2, y-height/2, width, height);
 		g.setTransform(oldTrans);
 	}

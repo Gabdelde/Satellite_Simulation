@@ -30,29 +30,28 @@ public class Ellipse {
 		this.height = 0.0;
 		this.rotation = 0.0;
 		
-		this.rotationPoint = new Point2D.Double(x, y);
 		this.color = Color.WHITE;
-		recalculateDrawing();
+		update();
 	}
 	
 	public Ellipse(double x, double y, double rotation) {
 		this(x,y);
 		this.rotation = Math.toRadians(rotation);
-		recalculateDrawing();
+		update();		
 	}
 	
 	public Ellipse(double x, double y, double w, double h) {
 		this(x, y);
 		this.width = w;
 		this.height = h;
-		recalculateDrawing();
+		update();
 	}
 	
 	public Ellipse(double x, double y, double w, double h, double rotation) {
 		this(x, y, rotation);
 		this.width = w;
 		this.height = h;		
-		recalculateDrawing();
+		update();
 	}
 	
 	
@@ -74,8 +73,24 @@ public class Ellipse {
 		return height;
 	}
 	
+	public Point2D getLeftFocus() {
+		double a = width/2.0, b = height/2.0;
+		double c = Math.sqrt(a*a - b*b);
+		return new Point2D.Double(x-c, y);
+	}
+	
+	public Point2D getRightFocus() {
+		double a = width/2.0, b = height/2.0;
+		double c = Math.sqrt(a*a - b*b);
+		return new Point2D.Double(x+c, y);
+	}
+	
 	public double getRotation() {
 		return Math.toDegrees(rotation);
+	}
+	
+	public double getRotationRads() {
+		return rotation;
 	}
 	
 	public Point2D getRotationPoint() {
@@ -92,25 +107,39 @@ public class Ellipse {
 	
 	public void setX(double xx) {
 		this.x = xx;
+		update();
 	}
 
 	public void setY(double yy) {
 		this.y = yy;
+		update();
 	}
 	
 	public void setWidth(double w) {
 		this.width = w;
+		update();
 	}
 	
 	public void setHeight(double h) {
 		this.height = h;
+		update();
 	}
 	
 	public void setRotation(double degrees) {
 		this.rotation = Math.toRadians(degrees);
+		update();
 	}
 		
 	// OTHER METHODS
+	
+	public void update() {
+		calculateRotationPoint();
+		recalculateDrawing();
+	}
+	
+	public void calculateRotationPoint() {
+		this.rotationPoint = getLeftFocus();
+	}
 	
 	public void recalculateDrawing() {
 		Point2D upperleftPoint = getDrawingPoint();
@@ -123,7 +152,15 @@ public class Ellipse {
 		g.rotate(rotation, rotationPoint.getX(), rotationPoint.getY());
 		g.setColor(color);
 		g.setStroke(stroke);
-		g.draw(drawing);		
+		
+		g.draw(drawing);
+		/*
+		g.setColor(Color.yellow);
+		g.drawLine((int)x, (int)(y-height/2), (int)x, (int)(y+height/2));
+		g.drawLine((int)(x-width/2), (int)y, (int)(x+width/2), (int)y);
+		g.fillOval((int)getLeftFocus().getX()-5, (int)getLeftFocus().getY()-5, 10, 10);
+		g.fillOval((int)getRightFocus().getX()-5, (int)getRightFocus().getY()-5, 10, 10);
+		*/
 		g.setStroke(oldStk);
 		g.setTransform(oldTrans);
 	}
